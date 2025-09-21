@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alma.corp Dark Final</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Roboto',sans-serif;
+  background:linear-gradient(135deg,#0d0f1d,#1b0f3f);
+  color:#fff;
+  overflow-x:hidden;
+}
+header{
+  position:fixed;top:0;left:0;width:100%;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 15px;
+  backdrop-filter:blur(12px);
+  background:rgba(20,20,40,0.8);
+  border-bottom:1px solid rgba(140,130,255,0.2);
+  z-index:1000;
+}
+header h1{color:#8c82ff;font-size:1.5rem;}
+nav{display:flex;gap:8px;flex-wrap:wrap;}
+nav button{
+  padding:8px 12px;border:none;border-radius:8px;
+  background:rgba(140,130,255,0.2);
+  color:#8c82ff;font-weight:500;
+  cursor:pointer;transition:0.3s;
+}
+nav button:hover{transform:scale(1.05);background:rgba(140,130,255,0.4);}
+#content{margin-top:70px;padding:15px;}
+.section{
+  display:none;flex-direction:column;align-items:center;text-align:center;
+  margin-bottom:20px;padding:20px;
+  background:rgba(20,20,40,0.6);border-radius:16px;
+  backdrop-filter:blur(12px);box-shadow:0 4px 16px rgba(0,0,0,0.5);
+  transition:all 0.6s ease;
+}
+.section.active{display:flex;animation:fadeSlide 0.6s;}
+@keyframes fadeSlide{0%{opacity:0;transform:translateY(15px);}100%{opacity:1;transform:translateY(0);}}
+.popup{
+  position:fixed;top:20%;left:50%;transform:translateX(-50%);
+  background:rgba(30,30,60,0.95);color:#fff;padding:12px 20px;
+  border-radius:12px;display:none;z-index:2000;font-weight:500;
+}
+.bucin-text{display:none;font-size:1.2rem;margin:10px 0;color:#8c82ff;transition:all 0.5s;}
+.bucin-text.active{display:block;animation:bounce 1s ease;}
+@keyframes bounce{0%,20%,50%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}60%{transform:translateY(-3px);}}
+.kode-input{padding:10px;margin:10px;border-radius:6px;border:1px solid #8c82ff;background:rgba(0,0,0,0.2);color:#fff;width:80%;}
+.shake{animation:shake 0.4s;}
+@keyframes shake{0%{transform:translateX(0);}25%{transform:translateX(-4px);}50%{transform:translateX(4px);}75%{transform:translateX(-4px);}100%{transform:translateX(0);}}
+canvas#gameCanvas{background:rgba(30,30,60,0.8);display:block;margin:auto;border-radius:12px;border:2px solid #8c82ff;width:90%;height:auto;}
+.scoreboard{position:fixed;top:60px;right:10px;color:#8c82ff;font-weight:600;font-size:1rem;text-shadow:0 0 4px rgba(0,0,0,0.5);}
+@media(min-width:768px){canvas#gameCanvas{width:320px;height:480px;}}
+</style>
+</head>
+<body>
+<header>
+<h1>Alma.corp Dark</h1>
+<nav>
+<button onclick="showSection('home')">Home</button>
+<button onclick="showSection('meme')">Meme</button>
+<button onclick="showSection('jokes')">Jokes</button>
+<button onclick="showSection('game')">Game</button>
+<button onclick="showSection('bucin')">Bucin</button>
+<button onclick="window.open('https://t.me/Anjayani92','_blank')">Telegram</button>
+<button onclick="window.open('https://www.facebook.com/animon.hadest','_blank')">FB</button>
+<button onclick="window.open('https://chat.openai.com/','_blank')">GPT</button>
+<button onclick="window.open('https://www.google.com/gemini/','_blank')">Gemini</button>
+<button onclick="window.open('https://www.youtube.com/@OpenAI','_blank')">YouTube GPT</button>
+</nav>
+</header>
+
+<div id="content">
+<div class="section active" id="home">
+<h2>Selamat Datang di Alma.corp Final 🎉</h2>
+<p>UI futuristik dark + animasi smooth, memes, jokes, mini game, bucinan interaktif 💜</p>
+</div>
+
+<div class="section" id="meme">
+<h2>Meme Area 🤣</h2>
+<button onclick="showPopupStack('🤣 Meme 1: Aku + Kamu = Kita')">Meme 1</button>
+<button onclick="showPopupStack('😂 Meme 2: Error 500, Ketawa dulu baru cinta')">Meme 2</button>
+<button onclick="showPopupStack('🤣 Meme 3: Cinta = WiFi sinyalnya kuat')">Meme 3</button>
+</div>
+
+<div class="section" id="jokes">
+<h2>Jokes 🔥</h2>
+<button onclick="showJokeStack()">Tampilkan Joke</button>
+<div id="jokeArea"></div>
+</div>
+
+<div class="section" id="game">
+<h2>Mini Game Flappy Bird 🎮</h2>
+<canvas id="gameCanvas"></canvas>
+<div class="scoreboard" id="scoreboard">Score: 0</div>
+</div>
+
+<div class="section" id="bucin">
+<h2>Bucin Area 💕</h2>
+<div id="bucinTexts">
+<p class="bucin-text active">Kalau kamu bintang, aku pengen jadi langit 🌌</p>
+<p class="bucin-text">Biar bisa selalu jagain kamu dari jauh ✨</p>
+<p class="bucin-text">Aku lebih pengen deketin kamu 💖</p>
+<p class="bucin-text">Kamu itu alasan aku tersenyum 😘</p>
+<p class="bucin-text">Aku mau jadi alasan kamu meleleh 💕</p>
+</div>
+<h3 style="color:#8c82ff;">Khusus Shella 💌</h3>
+<input class="kode-input" id="kode" placeholder="Masukkan kode...">
+<button onclick="checkKode()">Buka</button>
+<div id="shellaArea" style="display:none;margin-top:15px;">
+<h3 style="color:#8c82ff;">Untuk Shella Tersayang 🌹</h3>
+<p>Shella... kamu kayak lagu favorit 🎶</p>
+<p>Ga butuh alasan buat sayang, cukup kamu ada 💕</p>
+<audio id="loveSong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" autoplay></audio>
+</div>
+</div>
+</div>
+
+<div id="popup" class="popup"></div>
+<audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" loop autoplay></audio>
+
+<script>
+// Section Navigation
+let currentSection=document.querySelector(".section.active");
+function showSection(id){
+const nextSection=document.getElementById(id);
+if(currentSection===nextSection)return;
+currentSection.classList.remove("active");
+nextSection.classList.add("active");
+currentSection=nextSection;
+playClick();
+}
+
+// Click Sound
+function playClick(){let clickSound=new Audio("https://www.soundjay.com/buttons/sounds/button-16.mp3");clickSound.play();}
+
+// Popup Stack
+let popupQueue=[];
+function showPopupStack(text){popupQueue.push(text);renderPopupStack();}
+function renderPopupStack(){
+const popup=document.getElementById("popup");
+if(popupQueue.length>0){
+popup.innerText=popupQueue.shift();
+popup.style.display="block";
+setTimeout(()=>{popup.style.display="none";renderPopupStack();},2500);
+}
+}
+
+// Jokes Stack
+const jokes=["Kenapa ayam nyebrang jalan? Karena dia ga bisa terbang 🤣","Kamu tau bedanya kamu sama wifi? Wifi ada sinyalnya, kamu ada cintanya 💘","Laptop panas bisa pake kipas, kalau hati panas? butuh kamu 😘"];
+function showJokeStack(){let joke=jokes[Math.floor(Math.random()*jokes.length)];popupQueue.push(joke);renderPopupStack();document.getElementById("jokeArea").innerText=joke;}
+
+// Bucin Publik
+let bucinIndex=0;
+const bucinTexts=document.querySelectorAll(".bucin-text");
+setInterval(()=>{
+if(currentSection.id==="bucin"){
+bucinTexts[bucinIndex].classList.remove("active");
+bucinIndex=(bucinIndex+1)%bucinTexts.length;
+bucinTexts[bucinIndex].classList.add("active");
+}
+},4000);
+
+// Kode Shella
+function checkKode(){
+const kode=document.getElementById("kode");
+if(kode.value==="ASDASD777"){
+document.getElementById("shellaArea").style.display="block";
+}else{kode.classList.add("shake");setTimeout(()=>kode.classList.remove("shake"),500);}
+}
+
+// Mini Game Flappy Bird Neon
+const canvas=document.getElementById("gameCanvas");
+const ctx=canvas.getContext("2d");
+let birdY=canvas.height/2, gravity=1.5, velocity=0, score=0;
+let gameRunning=false;
+const flapSound=new Audio("https://www.soundjay.com/button/sounds/button-16.mp3");
+
+canvas.addEventListener("click",()=>{velocity=-20; flapSound.play(); gameRunning=true;});
+function gameLoop(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+if(gameRunning){
+velocity+=gravity;
+birdY+=velocity;
+if(birdY<0)birdY=0;if(birdY>canvas.height-20)birdY=canvas.height-20;
+score+=0.01;
+}
+ctx.fillStyle="#8c82ff";ctx.fillRect(50,birdY,20,20);
+document.getElementById("scoreboard").innerText="Score: "+Math.floor(score);
+requestAnimationFrame(gameLoop);
+}
+gameLoop();
+</script>
+</body>
+</html>
